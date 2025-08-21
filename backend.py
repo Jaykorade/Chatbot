@@ -2,18 +2,18 @@ from langgraph.graph import StateGraph, START, END
 from typing import TypedDict, Annotated
 from langchain_core.messages import BaseMessage, HumanMessage
 from langchain_openai import ChatOpenAI
-import operator
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph.message import add_messages
 from dotenv import load_dotenv
-
+import streamlit as st
+st.secrets["OPENAI_API_KEY"]
 load_dotenv()
 
 class ChatState(TypedDict):
     messages: Annotated[list[BaseMessage], add_messages]
 
 
-llm = ChatOpenAI()
+llm = ChatOpenAI(api_key=OPENAI_API_KEY)
 
 def chat_node(state: ChatState):
     # take user query from state
