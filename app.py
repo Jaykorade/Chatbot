@@ -2,6 +2,13 @@ import streamlit as st
 from backend import chatbot
 from langchain_core.messages import HumanMessage
 
+import subprocess
+import sys
+
+print("Python version:", sys.version)
+print("Installed packages:")
+subprocess.run([sys.executable, "-m", "pip", "freeze"])
+
 st.title("Welcome I am ur AI assistant")
 if 'message_hist' not in st.session_state:
      st.session_state['message_hist']=[]
