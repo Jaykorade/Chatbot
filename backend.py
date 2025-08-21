@@ -6,8 +6,9 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph.message import add_messages
 from dotenv import load_dotenv
 import streamlit as st
-st.secrets["OPENAI_API_KEY"]
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 load_dotenv()
+
 
 class ChatState(TypedDict):
     messages: Annotated[list[BaseMessage], add_messages]
