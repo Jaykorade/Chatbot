@@ -45,8 +45,7 @@ config = {'configurable':{'thread_id':1}}
 #     config = {'configurable':{'thread_id':thread_id}}
 #     response = chatbot.invoke({'messages': [HumanMessage(content=user_messsage)]},config=config)
 #     print("assistant",response['messages'][-1].content)
+    
+stream = chatbot.stream({'messages': [HumanMessage(content="what is receptie to make pasta")]},config=config,stream_mode='messages')
 
-# for message_chunk, metadata in chatbot.stream({'messages': [HumanMessage(content="what is receptie to make pasta")]},config=config,stream_mode='messages'):
-#     if message_chunk.content:
-#         print(message_chunk.content,end=" ",flush=True)
-
+print(type(stream))

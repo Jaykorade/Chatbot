@@ -1,6 +1,7 @@
 import streamlit as st
 from backend import chatbot
 from langchain_core.messages import HumanMessage
+import time
 st.title("Welcome, I am ur AI assistant")
 
 SECRET_CODE = 'Jay9920'
@@ -21,7 +22,7 @@ else:
     if st.button("🔒 Logout"):
         st.session_state.authenticated = False
         st.session_state.message_hist = []
-        st.experimental_rerun()
+        st.rerun()
 
     # LLM
     for message in st.session_state['message_hist']:
@@ -36,13 +37,19 @@ else:
             st.markdown(user_input)
 
         config = {'configurable':{'thread_id':1}}
-   
 
-        response = chatbot.invoke({'messages': [HumanMessage(content = user_input)]},config=config)
-
-        ai_message = response['messages'][-1].content
-
+        with st.spinner("Thinking..."):
+            with st.chat_message("assistant"):
+                placeholder = st.empty()
+                ai_message = ""
+                for message_chunk, metadata in chatbot.stream(
+                {'messages': [HumanMessage(content=user_input)]},
+                config=config,
+                stream_mode='messages'
+                ):
+                    if message_chunk.content:
+                        ai_message += message_chunk.content
+                        placeholder.markdown(ai_message)
+                        time.sleep(0.10)
         st.session_state['message_hist'].append({'role':"assistant",'content':ai_message})
-        with st.chat_message("assistant"):
-            st.markdown(ai_message)
-
+            
