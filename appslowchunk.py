@@ -10,14 +10,18 @@ if "authenticated" not in st.session_state:
 if "message_hist" not in st.session_state:
     st.session_state.message_hist = []
 
+
 if not st.session_state.authenticated:
-    code = st.text_input("Enter Code", type="password")
-    if code == SECRET_CODE:
-        st.session_state.authenticated = True
-        st.success("Code correct! Access granted ✅")
-        st.rerun()
+    Username = st.text_input("Username")
+    code = st.text_input("Password", type="password")
+    if st.button("Log in"):
+        if code == SECRET_CODE:
+            st.session_state.authenticated = True
+            st.success("Code correct! Access granted ✅")
+            st.button("login")
+            st.rerun()
 else:
-    st.write("🎉 You are logged in!")
+    st.write(f"🎉Welcome, Type your query below")
     
     if st.button("🔒 Logout"):
         st.session_state.authenticated = False
@@ -50,6 +54,6 @@ else:
                     if message_chunk.content:
                         ai_message += message_chunk.content
                         placeholder.markdown(ai_message)
-                        time.sleep(0.10)
+                        time.sleep(0.05)
         st.session_state['message_hist'].append({'role':"assistant",'content':ai_message})
             
