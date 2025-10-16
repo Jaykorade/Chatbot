@@ -1,8 +1,13 @@
+# Tip: if you get ImportError for SqliteSaver or langgraph modules, run:
+#   pip show langgraph
+#   pip install --upgrade langgraph
+#   pip install langgraph==<version>   # if you need a specific release
+
 import streamlit as st
 from langgraph_database import chatbot,retrieve_all_threads
 from langchain_core.messages import HumanMessage
 import uuid 
-
+from streamlit.runtime.scriptrunner import RerunException
 #-------------utility functions-----------------
 def generate_thread_id():
     thread_id = uuid.uuid4()
@@ -78,7 +83,7 @@ else:
     if st.button("🔒 Logout"):
         st.session_state.authenticated = False
         st.session_state.message_hist = []
-        st.experimental_rerun()
+        raise RerunException(st.session_state)
 
     # LLM
     for message in st.session_state['message_hist']:
@@ -104,4 +109,4 @@ else:
                )  
             )
         st.session_state['message_hist'].append({'role':"assistant",'content':ai_message})
-        
+
